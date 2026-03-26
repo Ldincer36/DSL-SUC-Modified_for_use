@@ -1,0 +1,17 @@
+batchsize: 64
+ckptdir: ckpt/dls-suc
+lr: 0.00015
+max_epochs: 20
+model_params:
+  dropout_linears:
+  - 0.4
+  - 0.2
+  in_channels: 343
+  num_linears:
+  - 700
+  - 220
+  seqlen: 33
+monitor: valid_S
+name: dls-suc
+patience: 6
+weight_decay: 0

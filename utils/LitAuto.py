@@ -14,7 +14,7 @@ from torchmetrics.classification import (
 )
 import lightning.pytorch as pl
 import yaml
-with open("E:\study\DLS-SUC\config.yaml", "r", encoding="utf-8") as f:  # 指定 utf-8
+with open("config.yaml", "r", encoding="utf-8") as f:  # 指定 utf-8
     config = yaml.safe_load(f)
 
 class LitAuto(pl.LightningModule):

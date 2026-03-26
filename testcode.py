@@ -124,9 +124,9 @@ def infer_softvote_from_ckpts(
     f1 = f1_score(test_labels, soft_pred)
     mcc = matthews_corrcoef(test_labels, soft_pred)
     sn = recall_score(test_labels, soft_pred)
-    tn, fp, fn, tp = confusion_matrix(test_labels, soft_pred).ravel()
-    sp = tn / (tn + fp) if (tn + fp) > 0 else 0
-    bacc = (sn + sp) / 2
+    #tn, fp, fn, tp = confusion_matrix(test_labels, soft_pred).ravel()
+    #sp = tn / (tn + fp) if (tn + fp) > 0 else 0
+    #bacc = (sn + sp) / 2
 
     auc_score = roc_auc_score(test_labels, avg_proba)
     precision, recall, _ = precision_recall_curve(test_labels, avg_proba)
@@ -135,26 +135,40 @@ def infer_softvote_from_ckpts(
 
     # 打印
     print("\nSoftVoting(ckpts) 评估结果：")
-    print(f"Recall(SN): {sn:.4f}")
-    print(f"Specificity(SP): {sp:.4f}")
+    #print(f"Recall(SN): {sn:.4f}")
+    #print(f"Specificity(SP): {sp:.4f}")
     print(f"Accuracy  : {acc:.4f}")
     print(f"AUC       : {auc_score:.4f}")
     print(f"AP        : {ap_score:.4f}")
     print(f"MCC       : {mcc:.4f}")
     print(f"F1-score  : {f1:.4f}")
     print(f"AUPR      : {aupr:.4f}")
-    print(f"bacc      : {bacc:.4f}")
+    #print(f"bacc      : {bacc:.4f}")
 
     # 保存
-    pd.DataFrame({'true': test_labels, 'pred': soft_pred}).to_csv(
-        f"{output_dir}/soft_from_ckpts_ensemble_result.csv", index=False
-    )
+    test_df = pd.read_csv("data/suc/test_data.csv").copy()
+
+    test_df["probability"] = avg_proba
+    test_df["predicted_label"] = soft_pred
+
+    test_df.to_csv(
+    f"{output_dir}/soft_from_ckpts_ensemble_result.csv",
+    index=False
+)
+
+    top10_df = test_df.sort_values("probability", ascending=False).head(10)
+    top10_df.to_csv(
+    f"{output_dir}/top10_high_confidence_sites.csv",
+    index=False
+)
+    
+    """
     pd.DataFrame([
         {
             'SN': sn, 'SP': sp, 'Accuracy': acc, 'AUC': auc_score,
             'AP': ap_score, 'MCC': mcc, 'F1': f1, 'AUPR': aupr, 'bacc': bacc
         }
-    ]).to_csv(f"{output_dir}/soft_from_ckpts_metrics.csv", index=False)
+    ]).to_csv(f"{output_dir}/soft_from_ckpts_metrics.csv", index=False)"""
 
     end_time = datetime.now()
     print("-" * 60)

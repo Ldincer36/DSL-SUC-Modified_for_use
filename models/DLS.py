@@ -4,7 +4,7 @@ from models.Densenet import *
 import yaml
 from models.senet import *
 # 读取配置文件
-with open("E:\study\DLS-SUC\config.yaml", "r", encoding="utf-8") as f:
+with open("config.yaml", "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
 class  classifier(nn.Module):

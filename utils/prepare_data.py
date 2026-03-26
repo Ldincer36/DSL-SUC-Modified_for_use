@@ -4,7 +4,7 @@ from typing import Union, List, SupportsIndex, Sequence, Callable, Optional, Any
 from multimethod import multimethod as singledispatchmethod
 from utils.encoder import *
 import yaml
-with open("E:\study\DLS-SUC\config.yaml", "r", encoding="utf-8") as f:  # 指定 utf-8
+with open("config.yaml", "r", encoding="utf-8") as f:  # 指定 utf-8
     config = yaml.safe_load(f)
 
 class iDataset(Dataset):
@@ -49,7 +49,7 @@ class iDataset(Dataset):
     def __len__(self):
         return len(self.argc[0])
 
-def get_Ksucc(path="data/suc", fe= iFunction.load_onehot_esm2):
+def get_Ksucc(path="data/suc", fe=iFunction.load_onehot_esm2):
     path = os.path.join("data", "suc")
     trainset = pd.read_csv(os.path.join(path, 'train_data.csv'))
     testset = pd.read_csv(os.path.join(path, "test_data.csv"))
